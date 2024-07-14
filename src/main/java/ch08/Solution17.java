@@ -45,7 +45,7 @@ public class Solution17 {
     }
 
     public static ListNode swapPairsWithRecursion(ListNode head) {
-        if (head == null || head.next == null) {
+        if (head != null && head.next != null) {
             ListNode next = head.next;
             head.next = swapPairsWithRecursion(head.next.next);
             next.next = head;
