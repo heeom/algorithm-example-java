@@ -32,4 +32,28 @@ public class Solution18 {
 
         return oddRoot.next;
     }
+
+    public ListNode oddEvenList2(ListNode head) {
+        // 방어코드
+        if (head == null) {
+            return head;
+        }
+        // 홀수
+        ListNode odd = head;
+        // 짝수
+        ListNode even = head.next;
+        ListNode evenHead = even; // 짝수노드 첫번째 (홀수노드의 가장 마지막 노드와 연결해야하므로)
+        while (even != null && even.next != null) {
+            // 두칸씩 이동
+            odd.next = odd.next.next;
+            even.next = even.next.next;
+
+            odd = odd.next;
+            even = even.next;
+        }
+        // 홀수노드의 마지막 노드를 짝수노드의 첫번째와 연결
+        odd.next = evenHead;
+        // 첫번째 노드
+        return head;
+    }
 }
