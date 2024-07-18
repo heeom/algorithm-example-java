@@ -36,4 +36,21 @@ public class Solution20 {
         }
         return stack.isEmpty();
     }
+    public static boolean isValidWithMap(String s) {
+        Map<Character, Character> table = new HashMap<>(){{
+            put(')','(');
+            put('}','{');
+            put(']','[');
+        }};
+        ArrayDeque<Character> stack = new ArrayDeque<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!table.containsKey(c)) {
+                stack.push(c);
+            } else if (stack.isEmpty() || table.get(c)!= stack.pop()) {
+                return false;
+            }
+        }
+        return stack.isEmpty();
+    }
 }
