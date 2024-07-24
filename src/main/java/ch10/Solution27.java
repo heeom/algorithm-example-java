@@ -1,10 +1,20 @@
 package ch10;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 
 public class Solution27 {
+
+    public static void main(String[] args) {
+
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>((o1, o2) -> {
+            if (o1 == o2) {
+                return 0;
+            } else if (o1 > o2) {
+                return 1;
+            }
+            return -1;
+        });
+    }
 
     public static class ListNode {
         int val;
