@@ -3,8 +3,16 @@ package ch11;
 import java.util.*;
 
 public class Solution33 {
+    public static void main(String[] args) {
 
-    public int[] topKFrequent(int[] nums, int k) {
+        topKFrequent(new int[]{1,1,1,2,2,3}, 2);
+        // 제일 빠름
+        topKFrequentWithOnlyHashMap(new int[]{1,1,1,2,2,3}, 2);
+
+        topKFrequentWithHashMapPriorityQueue(new int[]{1,1,1,2,2,3}, 2);
+    }
+
+    public static int[] topKFrequent(int[] nums, int k) {
         PriorityQueue<Num> pq = new PriorityQueue<>((o1, o2) -> o2.count - o1.count);
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
@@ -38,7 +46,7 @@ public class Solution33 {
         }
     }
 
-    public int[] topKFrequentWithOnlyHashMap(int[] nums, int k) {
+    public static int[] topKFrequentWithOnlyHashMap(int[] nums, int k) {
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
             map.put(num, map.getOrDefault(num, 0) + 1);
@@ -65,7 +73,7 @@ public class Solution33 {
         return result;
     }
 
-    public int[] topKFrequentWithHashMapPriorityQueue(int[] nums, int k) {
+    public static  int[] topKFrequentWithHashMapPriorityQueue(int[] nums, int k) {
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
             map.put(num, map.getOrDefault(num, 0) + 1);
