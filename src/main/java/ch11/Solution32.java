@@ -1,8 +1,6 @@
 package ch11;
 
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.PriorityQueue;
 
 public class Solution32 {
 
@@ -19,6 +17,7 @@ public class Solution32 {
         int right = 0;
 
         for (char c : s.toCharArray()) {
+            // 슬라이딩 윈도우와 겹치는 경우만 오른쪽으로 한칸 이동
             if (map.containsKey(c) && left < map.get(c)) {
                 left = map.get(c) + 1;
             } else {
