@@ -1,22 +1,11 @@
 package ch11;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Solution33 {
 
     public int[] topKFrequent(int[] nums, int k) {
-        PriorityQueue<Num> pq = new PriorityQueue<>((o1, o2) -> {
-            if (o1.count == o2.count) {
-                return 0;
-            } else if (o1.count < o2.count) {
-                return 1;
-            } else {
-                return -1;
-            }
-        });
+        PriorityQueue<Num> pq = new PriorityQueue<>((o1, o2) -> o2.count - o1.count);
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
             map.put(num, map.getOrDefault(num, 0) + 1);
@@ -74,5 +63,25 @@ public class Solution33 {
             }
         }
         return result;
+    }
+
+    public int[] topKFrequentWithHashMapPriorityQueue(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        // 참조형이라 가능
+        // [num, frequency]
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+
+        for (int num : map.keySet()) {
+            pq.offer(new int[]{num, map.get(num)});
+        }
+        int[] results = new int[k];
+        for (int i = 0; i < k; i++) {
+            results[i] = pq.poll()[0];
+        }
+        return results;
     }
 }
