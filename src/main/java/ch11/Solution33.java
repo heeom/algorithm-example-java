@@ -1,6 +1,8 @@
 package ch11;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class Solution33 {
@@ -45,5 +47,32 @@ public class Solution33 {
         public int getValue() {
             return value;
         }
+    }
+
+    public int[] topKFrequentWithOnlyHashMap(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        HashMap<Integer, List<Integer>> frequencyByNum = new HashMap<>();
+        for (int num : map.keySet()) {
+            Integer frequency = map.get(num);
+            List<Integer> numberList = frequencyByNum.getOrDefault(frequency, new ArrayList<>());
+            numberList.add(num);
+            frequencyByNum.put(frequency, numberList);
+        }
+
+        int [] result = new int[k];
+        int idx = 0;
+        for (int i = nums.length; i >= 0 && idx < k; i--) {
+            if (frequencyByNum.containsKey(i)) {
+                for (Integer num : frequencyByNum.get(i)) {
+                    result[idx] = num;
+                    idx++;
+                }
+            }
+        }
+        return result;
     }
 }
