@@ -15,6 +15,8 @@ public class Graph {
         graph.put(7, Arrays.asList(3));
         recursiveDfs(1, new ArrayList<>());
         iterativeDfs(1);
+        Integer[] array = bfsWithQueue(1).toArray(new Integer[0]);
+        System.out.println(array);
     }
 
     private static List<Integer> recursiveDfs(int n, List<Integer> visited) {
@@ -37,9 +39,26 @@ public class Graph {
             n = stack.pop();
             if (!visited.contains(n)) {
                 visited.add(n);
+                for (int next : graph.get(n)) {
+                    stack.push(next);
+                }
             }
-            for (int next : graph.get(n)) {
-                stack.push(next);
+        }
+        return visited;
+    }
+
+    private static List<Integer> bfsWithQueue(int n) {
+        List<Integer> visited = new ArrayList<>();
+        Queue<Integer> queue = new LinkedList<>();
+        visited.add(n);
+        queue.offer(n);
+        while(!queue.isEmpty()) {
+            int v = queue.poll();
+            for (int next : graph.get(v)) {
+                if (!visited.contains(next)) {
+                    visited.add(next);
+                    queue.offer(next);
+                }
             }
         }
         return visited;
