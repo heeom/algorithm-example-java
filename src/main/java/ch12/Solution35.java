@@ -6,8 +6,8 @@ import java.util.Queue;
 public class Solution35 {
 
     public static void main(String[] args) {
-//        int i = numIslands(new char[][]{{'1', '1', '1', '1', '0'}, {'1', '1', '0', '1', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '0', '0', '0'}});
-//        System.out.println("result " + i);
+        int i = numIslandsWithRecursiveCall(new char[][]{{'1', '1', '1', '1', '0'}, {'1', '1', '0', '1', '0'}, {'1', '1', '0', '0', '0'}, {'0', '0', '0', '0', '0'}});
+        System.out.println("result " + i);
         int result = numIslands(new char[][]{{'1', '1', '1'}, {'0', '1', '0'}, {'1', '1', '1'}});
         System.out.println("result " + result);
     }
@@ -56,5 +56,33 @@ public class Solution35 {
             }
         }
         return count;
+    }
+
+    public static int numIslandsWithRecursiveCall(char[][] grid) {
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1') {
+                    dfs(i, j, grid);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public static void dfs(int i, int j, char[][] grid) {
+        // i, j 가 grid 밖이거나 섬이 아니면 return
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0') {
+            return;
+        }
+
+        grid[i][j] = '0';
+
+        // 갈 수 있는 방향 재귀로 탐색
+        dfs(i - 1, j, grid);
+        dfs(i, j + 1, grid);
+        dfs(i + 1, j, grid);
+        dfs(i, j - 1, grid);
     }
 }
