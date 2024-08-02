@@ -36,6 +36,7 @@ public class Solution37 {
                 path.add(nums[i]);
                 keys.add(i);
                 dfs(new ArrayList<>(path), new HashSet<>(keys), result, nums);
+                // stack을 써도 좋을듯
                 keys.remove(i);
                 path.remove(path.size() - 1);
             }
