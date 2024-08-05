@@ -4,12 +4,13 @@ import java.util.*;
 
 public class Solution43 {
     public static void main(String[] args) {
-        boolean b = canFinish(2, new int[][]{new int[]{1, 2}});
-        System.out.println(b);
-        boolean result = canFinish(2, new int[][]{new int[]{1, 0}, new int[]{0, 1}});
-        System.out.println(result);
-        boolean canFinish = canFinishFindLoop(2, new int[][]{new int[]{1, 0}, new int[]{1, 7}, new int[]{1, 5}, new int[]{2, 6}, new int[]{6, 4}, new int[]{7, 0}});
-        System.out.println(canFinish);
+//        boolean b = canFinish(2, new int[][]{new int[]{1, 2}});
+//        System.out.println(b);
+//        boolean result = canFinish(2, new int[][]{new int[]{1, 0}, new int[]{0, 1}});
+//        System.out.println(result);
+//        boolean canFinish = canFinishFindLoop(2, new int[][]{new int[]{1, 0}, new int[]{1, 7}, new int[]{1, 5}, new int[]{2, 6}, new int[]{6, 4}, new int[]{7, 0}});
+//        System.out.println(canFinish);
+        canFinishBfs(2, new int[][]{new int [] {0,1}});
     }
 
     public static boolean canFinish(int numCourses, int[][] prerequisites) {
@@ -99,5 +100,50 @@ public class Solution43 {
         }
         visited[current] = false;
         return false;
+    }
+
+    /**
+     * 위에 dfs 풀이 보다 훨씬 빠름
+     * 예를 들면, 모든 차수가 > 0 인경우 탐색 안해도 됨
+     * */
+    public static boolean canFinishBfs(int numCourses, int[][] prerequisites) {
+        // queue
+        Queue<Integer> queue = new LinkedList<>();
+        int [] degree = new int[numCourses];
+
+        // graph 초기화
+        List<ArrayList<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < prerequisites.length; i++) {
+            graph.get(prerequisites[i][0]).add(prerequisites[i][1]);
+            // 앞에 몇개의 노드가 있는지
+            degree[prerequisites[i][1]]++;
+        }
+
+        int count = 0;
+        // 차수가 0인 노드들(선행 수업이 없는 강의들 == 제일먼저 들어도 되는 강의들)
+        for (int i = 0; i < numCourses; i++) {
+            if (degree[i] == 0) {
+                queue.add(i);
+                count++;
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            Integer node = queue.poll();
+            for (int i = 0; i < graph.get(node).size(); i++) {
+                Integer next = graph.get(node).get(i);
+                degree[next]--;
+                // 앞에 선행하는 노드가 없다면 탐색예정 큐에 삽입
+                if (degree[next] == 0) {
+                    queue.add(next);
+                    count++; // 탐색한 노드 수
+                }
+            }
+        }
+        return count == numCourses;
     }
 }
