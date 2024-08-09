@@ -16,6 +16,7 @@ public class Solution44 {
             graph.get(flight[0]).put(flight[1], flight[2]);
         }
 
+        Map<Integer, Integer> visited = new HashMap<>();
         // 노드, 해당 노드까지 걸리는 비용, 남은 경로 -> 노드까지의 비용을 기준으로 정렬
         PriorityQueue<List<Integer>> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.get(1)));
         pq.offer(List.of(src, 0, 0));
@@ -28,12 +29,15 @@ public class Solution44 {
             if (dst == dest) {
                 return weight;
             }
+            visited.put(dest, degree);
 
             if (degree <= k) {
                 degree += 1;
                 if (graph.containsKey(dest)) {
                     for (Map.Entry<Integer, Integer> next : graph.get(dest).entrySet()) {
-                        pq.add(List.of(next.getKey(), next.getValue() + weight, degree));
+                        if (!visited.containsKey(next.getKey()) || degree < visited.get(next.getKey())) {
+                            pq.add(List.of(next.getKey(), next.getValue() + weight, degree));
+                        }
                     }
                 }
             }
