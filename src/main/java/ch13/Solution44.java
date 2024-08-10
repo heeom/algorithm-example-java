@@ -1,44 +1,46 @@
 package ch13;
 
-
 import java.util.*;
 
 public class Solution44 {
+
     public static void main(String[] args) {
-        int i = networkDelayTime(new int[][]{new int[]{1,2,1}, new int[]{2,1,3}}, 2, 2);
-        System.out.println(i);
+        int cheapestPrice = findCheapestPrice(3, new int[][]{new int[]{0, 1, 100}, new int[]{1, 2, 100}, new int[]{0, 2, 500}}, 0, 2, 0);
+        System.out.println(cheapestPrice);
     }
 
-    public static int networkDelayTime(int[][] times, int n, int k) {
+    public static int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
         Map<Integer, Map<Integer, Integer>> graph = new HashMap<>();
-        for (int [] time : times) {
-            graph.putIfAbsent(time[0], new HashMap<>());
-            graph.get(time[0]).put(time[1], time[2]);
+        for (int[] flight : flights) {
+            graph.putIfAbsent(flight[0], new HashMap<>());
+            graph.get(flight[0]).put(flight[1], flight[2]);
         }
 
-        Queue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>(Map.Entry.comparingByValue());
-        pq.add(new AbstractMap.SimpleEntry<>(k, 0));
-        Map<Integer, Integer> distance = new HashMap<>();
+        Map<Integer, Integer> visited = new HashMap<>();
+        // 노드, 해당 노드까지 걸리는 비용, 남은 경로 -> 노드까지의 비용을 기준으로 정렬
+        PriorityQueue<List<Integer>> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.get(1)));
+        pq.offer(List.of(src, 0, 0));
 
         while (!pq.isEmpty()) {
-            Map.Entry<Integer, Integer> current = pq.poll();
-            Integer u = current.getKey();
-            Integer w = current.getValue();
+            List<Integer> cur = pq.poll();
+            Integer dest = cur.get(0);
+            Integer weight = cur.get(1);
+            Integer degree = cur.get(2);
+            if (dst == dest) {
+                return weight;
+            }
+            visited.put(dest, degree);
 
-            // u 노드까지 최단거리 계산
-            if (!distance.containsKey(u)){
-                distance.put(u, w);
-                if (graph.containsKey(u)) {
-                    for (Map.Entry<Integer, Integer> v : graph.get(u).entrySet()) {
-                        // v.getKey() + w = u 노드까지 최단 거리 + u 노드에서 v 노드까지 거리
-                        pq.add(new AbstractMap.SimpleEntry<>(v.getKey(), v.getValue() + w));
+            if (degree <= k) {
+                degree += 1;
+                if (graph.containsKey(dest)) {
+                    for (Map.Entry<Integer, Integer> next : graph.get(dest).entrySet()) {
+                        if (!visited.containsKey(next.getKey()) || degree < visited.get(next.getKey())) {
+                            pq.add(List.of(next.getKey(), next.getValue() + weight, degree));
+                        }
                     }
                 }
             }
-        }
-
-        if (distance.size() == n) {
-            return Collections.max(distance.values());
         }
         return -1;
     }
