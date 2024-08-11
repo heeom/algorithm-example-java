@@ -1,6 +1,13 @@
 package ch14;
 
+
 public class Solution48 {
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1, new TreeNode(2, null, null), null);
+        Solution48 solution48 = new Solution48();
+        int result = solution48.diameterOfBinaryTree(root);
+        System.out.println(result);
+    }
     static int longest = 0;
     public int diameterOfBinaryTree(TreeNode root) {
         if (root == null) {
@@ -12,7 +19,7 @@ public class Solution48 {
         return longest;
     }
 
-    public static int dfs(TreeNode node) {
+    public int dfs(TreeNode node) {
         if (node == null) {
             return -1;
         }
