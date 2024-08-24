@@ -1,13 +1,16 @@
 package ch15;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Solution60 {
 
     public static void main(String[] args) {
-        int kthLargest = findKthLargest(new int[]{3, 2, 3, 1, 2, 4, 5, 5, 6}, 4);
+        int[] nums = {3, 2, 3, 1, 2, 4, 5, 5, 6};
+        int kthLargest = findKthLargest(nums, 4);
         System.out.println(kthLargest);
+
+        int kthLargestWithPq = findKthLargestWithPq(nums, 4);
+        System.out.println(kthLargestWithPq);
     }
 
     public static int findKthLargest(int[] nums, int k) {
@@ -81,5 +84,21 @@ public class Solution60 {
             elems.set(i, elems.get(j));
             elems.set(j, value);
         }
+    }
+
+    public static int findKthLargestWithPq(int[] nums, int k) {
+        //Comparator가 양수 반환시 swap
+        Queue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+//        Queue<Integer> pq = new PriorityQueue<>((a, b) -> b - a); 도 가능 b > a 일때 스왑
+
+
+        for (int num : nums) {
+            pq.offer(num);
+        }
+
+        for (int i = 0; i < k-1; i++) {
+            pq.poll();
+        }
+        return pq.poll();
     }
 }
