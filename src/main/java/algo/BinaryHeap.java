@@ -4,8 +4,6 @@ import java.util.*;
 
 
 public class BinaryHeap {
-
-
     public List<Integer> elems;
 
     public BinaryHeap(List<Integer> elems) {
